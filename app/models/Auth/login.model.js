@@ -1,6 +1,7 @@
-const DB = require("../../models/db");
-const {generateToken, verifyToken} = require("../../config/tokenHandler")
-
+const db = require("../../config/db.config");
+const { generateToken, verifyToken } = require("../../config/tokenHandler");
+const bcrypt = require("bcrypt");
+const createHash = require("crypto");
 // constructor
 const Login = function (data) {
   this.email = data.email;
@@ -9,37 +10,89 @@ const Login = function (data) {
 
 Login.loginAction = async (req, res) => {
   try {
-    const { user, password } = req.body;
-    const verifyPassword = await bcrypt.compare(password, user.password);
-    if (!verifyPassword) {
-      return res.status(422).json({
-        status: 422,
-        message: "Incorrect password!",
-      });
-    }
-    console.log(verifyPassword);
-    // Generating Access and Refresh Token
-    const access_token = generateToken({ id: user.id });
-    const refresh_token = generateToken({ id: user.id }, false);
+    // console.log(req.password);
 
-    const md5Refresh = createHash("md5").update(refresh_token).digest("hex");
-
-    // Storing refresh token in MD5 format
-    const [result] = await DB.execute(
-      "INSERT INTO `refresh_tokens` (`tokenable_type`,`tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`) VALUES (?,?)",
-      [user.id, md5Refresh]
+    db.query(
+      `SELECT u.id, u.company_id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id and u.email = '${req.email}'`,
+      async (err, respons) => {
+        console.log(respons.length);
+        if (respons.length == 0) {
+          res(err, {
+            message: "Email tidak terdaftar!.",
+          });
+          return;
+        } else {
+          const verifyPassword = await bcrypt.compare(
+            req.password,
+            respons[0].password
+          );
+          if (!verifyPassword) {
+            res(err, {
+              message: "Invalid Password!.",
+            });
+            return;
+          } else {
+            const access_token = generateToken({ data: respons[0].uid });
+            // // Storing refresh token in MD5 format
+            const queryAccesToke =
+              "INSERT INTO `personal_access_tokens` (`tokenable_type`,`tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`) VALUES (?,?,?,?,?,?,?,?)";
+            const data = [
+              "AppModelsUser",
+              respons[0].id,
+              "authToken",
+              access_token,
+              '["*"]',
+              null,
+              null,
+              new Date(),
+            ];
+            db.query(queryAccesToke, data, (err, res) => {
+              if (err) {
+                console.log("error: ", err);
+                result(err, null);
+                return;
+              }
+            });
+            res(200, {
+              status: 200,
+              accessToken: access_token,
+              userData: respons[0],
+            });
+            return;
+          }
+          // Generating Access and Refresh Token
+        }
+      }
     );
-
-    if (!result.affectedRows) {
-      throw new Error("Failed to whitelist the refresh token.");
-    }
-    res.json({
-      status: 200,
-      access_token,
-      refresh_token,
-    });
   } catch (err) {
-    next(err);
+    console.log(err);
+  }
+};
+Login.cheklogin = async (req, res) => {
+  try {
+    const token = req.replace("Bearer ", "");
+    db.query(
+      `SELECT u.id, u.company_id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, r.role_name as role FROM personal_access_tokens pat, users u, role r WHERE pat.tokenable_id=u.id and u.role=r.id and pat.token = '${token}'`,
+      async (err, respons) => {
+        if (respons.length == 0) {
+          res(err, {
+            message: "Token tidak terdaftar!.",
+          });
+          return;
+        } else {
+          console.log(respons[0]);
+          res(200, {
+            status: 200,
+            accessToken: token,
+            message: "Login Active",
+            userData: respons[0],
+          });
+          return;
+        }
+      }
+    );
+  } catch (err) {
+    console.log(err);
   }
 };
 

@@ -5,11 +5,13 @@ const Register = function (data) {
   this.nik = data.nik;
   this.nta = data.nta;
   this.member_number = data.member_number;
-  this.full_name = data.full_name;
+  this.fullName = data.fullName;
   this.email = data.email;
+  this.password = data.password;
   this.date_of_birth = data.date_of_birth;
   this.address = data.address;
   this.phone_number = data.phone_number;
+  this.state = 'Verification';
   this.created_at = new Date();
 };
 

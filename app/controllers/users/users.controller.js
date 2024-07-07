@@ -1,5 +1,5 @@
-const Users = require("../models/users.model.js");
-
+const Users = require("../../models/users/users.model.js");
+const verifyToken = require("../../config/tokenHandler");
 // Create and Save a new Tutorial
 exports.register = (req, res) => {
   // Validate request
@@ -15,7 +15,7 @@ exports.register = (req, res) => {
     nik: req.body.nik,
     nta: req.body.nta,
     member_number: req.body.member_number,
-    full_name: req.body.full_name,
+    fullName: req.body.fullName,
     date_of_birth: req.body.date_of_birth,
     address: req.body.address,
     phone_number: req.body.phone_number,
@@ -33,17 +33,18 @@ exports.register = (req, res) => {
 };
 
 // Retrieve all Tutorials from the database (with condition).
-exports.findAll = (req, res) => {
-  const full_name = req.query.full_name;
+exports.findAll = verifyToken, (req, res, next) => {
+  // console.log(verifyToken);
+  // const fullName = req.query.fullName;
 
-  Users.getAll(full_name, (err, data) => {
-    if (err)
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials.",
-      });
-    else res.send(data);
-  });
+  // Users.getAll(fullName, (err, data) => {
+  //   if (err)
+  //     res.status(500).send({
+  //       message:
+  //         err.message || "Some error occurred while retrieving tutorials.",
+  //     });
+  //   else res.send(data);
+  // });
 };
 
 // // Find a single Tutorial by Id

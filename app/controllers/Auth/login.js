@@ -1,5 +1,8 @@
 const Login = require("../../models/Auth/login.model");
-exports.login = (req, res) => {
+const db = require("../../config/db.config");
+const bcrypt = require("bcrypt");
+const createHash = require("crypto");
+exports.login = async (req, res) => {
   // Validate request
   if (!req.body) {
     res.status(400).send({
@@ -10,15 +13,24 @@ exports.login = (req, res) => {
     email: req.body.email,
     password: req.body.password,
   });
-  //   const user = { id: 1, username: "exampleuser" };
 
   // Save Tutorial in the database
   Login.loginAction(users, (err, data) => {
-    if (err)
+    if (err != 200)
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials.",
+        message: err.message || "Some error occurred while retrieving Users.",
       });
     else res.send(data);
+  });
+};
+exports.cheklogin = async (req, res) => {
+  const AccessToken = req.headers["authorization"];
+  Login.cheklogin(AccessToken, (err, data) => {
+    if (err != 200)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving ChekLogin.",
+      });
+    else res.status(200).send(data);
   });
 };

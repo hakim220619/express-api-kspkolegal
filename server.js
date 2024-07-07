@@ -1,36 +1,28 @@
 const express = require("express");
 // const bodyParser = require("body-parser"); /* deprecated */
-const cors = require("cors");
+const cors = require('cors');
 
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
-
-app.use(cors(corsOptions));
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 // parse requests of content-type - application/json
 app.use(express.json()); /* bodyParser.json() is deprecated */
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true })); /* bodyParser.urlencoded() is deprecated */
-app.use((err, req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-  err.statusCode = err.statusCode || 500;
-  err.message = err.message || "Internal Server Error";
-  res.status(err.statusCode).json({
-    message: err.message,
-  });
-});
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
 
 require("./app/routes/routes.js")(app);
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

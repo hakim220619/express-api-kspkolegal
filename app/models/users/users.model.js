@@ -1,4 +1,4 @@
-const sql = require("./db.js");
+const db = require("../../config/db.config");
 
 // constructor
 const Users = function (users) {
@@ -6,15 +6,15 @@ const Users = function (users) {
   this.nik = users.nik;
   this.nta = users.nta;
   this.member_number = users.member_number;
-  this.full_name = users.full_name;
+  this.fullName = users.fullName;
   this.date_of_birth = users.date_of_birth;
   this.address = users.address;
   this.phone_number = users.phone_number;
   this.created_at = new Date();
 };
-
+  
 Users.create = (newUsers, result) => {
-  sql.query("INSERT INTO users SET ?", newUsers, (err, res) => {
+  db.query("INSERT INTO users SET ?", newUsers, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -45,14 +45,14 @@ Users.create = (newUsers, result) => {
 //   });
 // };
 
-Users.getAll = (full_name, result) => {
-  let query = "SELECT * FROM users where 1=1 ";
+Users.getAll = (fullName, result) => {
+  let query = "SELECT u.id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id ";
 
-  if (full_name) {
-    query += ` and full_name LIKE '%${full_name}%'`;
+  if (fullName) {
+    query += ` and u.email LIKE '%${fullName}%'`;
   }
 
-  sql.query(query, (err, res) => {
+  db.query(query, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
