@@ -3,8 +3,8 @@ const db = require("../../config/db.config");
 const Role = function (data) {
   this.role_name = data.role_name;
 };
-Role.getRole = (role_name, result) => {
-  let query = "SELECT * FROM role where 1=1 ";
+Role.getRoleAdmin = (role_name, result) => {
+  let query = "SELECT * FROM role where role_name NOT IN ('Pegawai', 'Anggota') ";
 
   if (role_name) {
     query += ` and role_name LIKE '%${role_name}%'`;

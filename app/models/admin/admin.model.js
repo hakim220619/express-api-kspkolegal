@@ -51,7 +51,7 @@ Admin.create = (newUsers, result) => {
 //   });
 // };
 
-Admin.getAll = (fullName, role, status, page, pageSize, result) => {
+Admin.getAll = (fullName, role, status, result) => {
   let query = "SELECT ROW_NUMBER() OVER () AS no, u.id, u.company_id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id and r.role_name not in ('Anggota', 'Pegawai')";
 
   if (fullName) {

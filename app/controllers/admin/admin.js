@@ -6,9 +6,7 @@ exports.listAdmin = (req, res, next) => {
 const fullName = req.query.q;
 const role = req.query.role;
 const status = req.query.status;
-const page = req.query.pagination.page;
-const pageSize = req.query.pagination.pageSize;
-  Admin.getAll(fullName, role, status, page, pageSize, (err, data) => {
+  Admin.getAll(fullName, role, status, (err, data) => {
     if (err)
       res.status(500).send({
         message:

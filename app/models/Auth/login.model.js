@@ -10,12 +10,9 @@ const Login = function (data) {
 
 Login.loginAction = async (req, res) => {
   try {
-    // console.log(req.password);
-
     db.query(
       `SELECT u.id, u.company_id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id and u.email = '${req.email}'`,
       async (err, respons) => {
-        console.log(respons.length);
         if (respons.length == 0) {
           res(err, {
             message: "Email tidak terdaftar!.",
