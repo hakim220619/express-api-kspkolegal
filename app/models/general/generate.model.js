@@ -3,6 +3,8 @@ const faker = require("faker");
 const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcrypt");
 const Generate = function (data) {};
+
+
 Generate.create = async (result) => {
   function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
@@ -33,5 +35,6 @@ Generate.create = async (result) => {
     result(null, results);
   });
 };
+
 
 module.exports = Generate;

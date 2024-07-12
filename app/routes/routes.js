@@ -18,6 +18,7 @@ module.exports = (app) => {
   // Retrieve all Tutorials
   router.get("/users/findAll", token.authenticateToken, profile.findAll);
   router.get("/general/getRole", token.authenticateToken, general.roleAdmin);
+  router.post("/general/findUsersByUid", token.authenticateToken, general.findUsersByUid);
   router.get("/faker/generate", general.generate);
 
 

@@ -77,7 +77,7 @@ Login.cheklogin = async (req, res) => {
           });
           return;
         } else {
-          console.log(respons[0]);
+          // console.log(respons[0]);
           res(200, {
             status: 200,
             accessToken: token,
