@@ -14,10 +14,13 @@ module.exports = (app) => {
 
   router.get("/list-admin", token.authenticateToken, Admin.listAdmin);
   router.post("/create-admin", token.authenticateToken, Admin.createAdmin);
+  router.post("/update-admin", token.authenticateToken, Admin.updateAdmin);
+  router.post("/delete-admin", token.authenticateToken, Admin.delete);
 
   // Retrieve all Tutorials
   router.get("/users/findAll", token.authenticateToken, profile.findAll);
   router.get("/general/getRole", token.authenticateToken, general.roleAdmin);
+  router.get("/general/getState", token.authenticateToken, general.getState);
   router.post("/general/findUsersByUid", token.authenticateToken, general.findUsersByUid);
   router.get("/faker/generate", general.generate);
 

@@ -8,7 +8,7 @@ exports.register = (req, res) => {
       message: "Content can not be empty!",
     });
   }
-  console.log(req.body);
+  // console.log(req.body);
   // Create a Tutorial
   const users = new Users({
     uid: req.body.uid,

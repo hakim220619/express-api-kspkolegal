@@ -29,6 +29,17 @@ exports.findUsersByUid = (req, res, next) => {
     else res.send(data);
   });
 };
+exports.getState = (req, res, next) => {
+  // console.log(req);
+  General.getState((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials.",
+      });
+    else res.send(data);
+  });
+};
 
 exports.generate = (req, res) => {
     Generate.create((err, data) => {
