@@ -32,5 +32,18 @@ General.getState = async (result) => {
     result(null, res);
   });
 };
+General.getCompany = async (result) => {
+  let query = "SELECT * from company where company_state = 'ON'";
+  db.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    // console.log("role: ", res);
+    result(null, res);
+  });
+};
 
 module.exports = General;

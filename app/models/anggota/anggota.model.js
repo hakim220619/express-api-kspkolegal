@@ -1,8 +1,7 @@
 const db = require("../../config/db.config");
 const bcrypt = require("bcrypt");
 // constructor
-const Admin = function (data) {
-  console.log(data);
+const Anggota = function (data) {
   this.uid = data.uid;
   this.company_id = data.company_id;
   this.nik = data.nik;
@@ -36,7 +35,7 @@ const Admin = function (data) {
   
 };
 
-Admin.create = (newUsers, result) => {
+Anggota.create = (newUsers, result) => {
   // console.log(newUsers);
   db.query("INSERT INTO users SET ?", newUsers, (err, res) => {
     if (err) {
@@ -45,12 +44,12 @@ Admin.create = (newUsers, result) => {
       return;
     }
 
-    console.log("created Admin: ", { id: res.insertId, ...newUsers });
+    console.log("created Anggota: ", { id: res.insertId, ...newUsers });
     result(null, { id: res.insertId, ...newUsers });
   });
 };
 
-Admin.update = (newUsers, result) => {
+Anggota.update = (newUsers, result) => {
   if (newUsers.password) {
     bcrypt.hash(newUsers.password, 10, (err, hash) => {
       if (err) {
@@ -92,23 +91,16 @@ const performUpdate = (newUsers, result) => {
   );
 };
 
-Admin.getAll = (fullName, role, status, company, result) => {
+Anggota.getAll = (fullName, company, result) => {
   let query =
-    "SELECT ROW_NUMBER() OVER () AS no, u.id, u.company_id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, u.password, r.role_name as role, c.company_name  FROM users u, role r, company c  WHERE u.role=r.id and u.company_id=c.id AND  r.role_name not in ('Anggota', 'Pegawai')";
+    "SELECT ROW_NUMBER() OVER () AS no, u.id, u.company_id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id and r.role_name = 'Anggota'";
 
   if (fullName) {
     query += ` AND u.fullName like '%${fullName}%'`;
   }
-  if (role) {
-    query += ` AND r.role_name = '${role}'`;
-  }
-  if (status) {
-    query += ` AND u.state = '${status}'`;
-  }
-  if (company != 1 && company != 'all') {
+  if (company != 1) {
     query += ` AND u.company_id = '${company}'`;
   }
-
   db.query(query, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -119,7 +111,7 @@ Admin.getAll = (fullName, role, status, company, result) => {
     result(null, res);
   });
 };
-Admin.delete = (uid, result) => {
+Anggota.delete = (uid, result) => {
   let query = `DELETE FROM users WHERE uid = '${uid}'`;
 
   db.query(query, (err, res) => {
@@ -133,4 +125,4 @@ Admin.delete = (uid, result) => {
   });
 };
 
-module.exports = Admin;
+module.exports = Anggota;

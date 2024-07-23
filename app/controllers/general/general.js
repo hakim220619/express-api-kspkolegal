@@ -17,6 +17,17 @@ exports.roleAdmin = (req, res, next) => {
     else res.send(data);
   });
 };
+exports.getCompany = (req, res, next) => {
+  // console.log(role_name);
+  General.getCompany((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials.",
+      });
+    else res.send(data);
+  });
+};
 exports.findUsersByUid = (req, res, next) => {
   const uid = req.body.uid;
   // console.log(req);
