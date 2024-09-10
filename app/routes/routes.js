@@ -20,13 +20,20 @@ module.exports = (app) => {
   //Anggota
   router.get("/list-anggota", token.authenticateToken, Anggota.listAnggota);
   router.post("/create-anggota", token.authenticateToken, Anggota.createAnggota);
+  router.post("/update-anggota", token.authenticateToken, Anggota.updateAnggota);
+
+  //Identity
+  router.get("/get-identity-types", token.authenticateToken, general.getIdentityTypes);
 
 
   // Retrieve all Tutorials
   router.get("/users/findAll", token.authenticateToken, profile.findAll);
-  router.get("/general/getRole", token.authenticateToken, general.roleAdmin);
-  router.get("/general/getCompany", token.authenticateToken, general.getCompany);
-  router.get("/general/getState", token.authenticateToken, general.getState);
+  router.get("/general/getRoleAdmin", token.authenticateToken, general.roleAdmin);
+  router.post("/general/getRoleNoDeve", token.authenticateToken, general.getRoleNoDeve);
+  router.post("/general/getCompany", token.authenticateToken, general.getCompany);
+  router.get("/general/getStatus", token.authenticateToken, general.getstatus);
+  router.get("/general/getReligion", token.authenticateToken, general.getReligion);
+  router.get("/general/getMaritalStatus", token.authenticateToken, general.getMaritalStatus);
   router.post(
     "/general/findUsersByUid",
     token.authenticateToken,

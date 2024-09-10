@@ -26,6 +26,8 @@ exports.login = async (req, res) => {
 exports.cheklogin = async (req, res) => {
   const AccessToken = req.headers["authorization"];
   Login.cheklogin(AccessToken, (err, data) => {
+    console.log(err);
+    
     if (err != 200)
       res.status(500).send({
         message:

@@ -17,15 +17,32 @@ exports.roleAdmin = (req, res, next) => {
     else res.send(data);
   });
 };
-exports.getCompany = (req, res, next) => {
+exports.getRoleNoDeve = (req, res, next) => {
+  const { role_name } = req.body;
+
   // console.log(role_name);
-  General.getCompany((err, data) => {
+  Role.getRoleNoDeve(role_name, (err, data) => {
     if (err)
       res.status(500).send({
         message:
           err.message || "Some error occurred while retrieving tutorials.",
       });
     else res.send(data);
+  });
+};
+exports.getCompany = (req, res, next) => {
+  // Extract company_id from the request body
+  const { company_id } = req.body;
+
+  // Call General.getCompany with company_id if needed
+  General.getCompany(company_id, (err, data) => {
+    if (err) {
+      res.status(500).send({
+        message: err.message || "Some error occurred while retrieving company data.",
+      });
+    } else {
+      res.send(data);
+    }
   });
 };
 exports.findUsersByUid = (req, res, next) => {
@@ -40,9 +57,42 @@ exports.findUsersByUid = (req, res, next) => {
     else res.send(data);
   });
 };
-exports.getState = (req, res, next) => {
+exports.getstatus = (req, res, next) => {
   // console.log(req);
-  General.getState((err, data) => {
+  General.getstatus((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials.",
+      });
+    else res.send(data);
+  });
+};
+exports.getReligion = (req, res, next) => {
+  // console.log(req);
+  General.getReligion((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials.",
+      });
+    else res.send(data);
+  });
+};
+exports.getMaritalStatus = (req, res, next) => {
+  // console.log(req);
+  General.getMaritalStatus((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials.",
+      });
+    else res.send(data);
+  });
+};
+exports.getIdentityTypes = (req, res, next) => {
+  // console.log(req);
+  General.getIdentityTypes((err, data) => {
     if (err)
       res.status(500).send({
         message:

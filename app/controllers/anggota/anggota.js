@@ -27,19 +27,27 @@ exports.createAnggota = async (req, res) => {
   }
   const anggota = new Anggota({
     uid: uuidv4(),
-    member_number: randomNumber(10000, 9999999),
+    member_id: randomNumber(10000, 9999999),
     nik: req.body.data.nik,
     company_id: req.body.data.company_id,
     fullName: req.body.data.fullName,
     email: req.body.data.email,
     dob: req.body.data.dob.slice(0, 10),
+    place_of_birth: req.body.data.place_of_birth || '', // Added field
     address: req.body.data.address,
     phone_number: req.body.data.phone_number,
+    gender: req.body.data.gender || '', // Added field
+    marital_status: req.body.data.marital_status || '', // Added field
+    identity_type: req.body.data.identity_type || '', // Added field
+    no_identity: req.body.data.no_identity || '', // Added field
+    religion: req.body.data.religion || '', // Added field
     password: await bcrypt.hash(req.body.data.password, 10),
-    role: 4,
+    role: req.body.data.role || 4, // Added field
     created_by: req.body.data.created_by,
-    state: "Active",
+    status: "Active",
     created_at: new Date(),
+    updated_by: req.body.data.updated_by || null, // Added field
+    updated_at: req.body.data.updated_at || null // Added field
   });
   // console.log(Anggota);
   // Save Tutorial in the database
@@ -72,7 +80,7 @@ exports.updateAnggota = async (req, res) => {
     phone_number: req.body.data.phone_number,
     role: req.body.data.role,
     company_id: req.body.data.company_id,
-    state: req.body.data.state,
+    status: req.body.data.status,
     updated_by: req.body.data.updated_by,
     updated_at: new Date(),
   });

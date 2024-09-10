@@ -29,7 +29,7 @@ exports.createAdmin = async (req, res) => {
   }
   const admin = new Admin({
     uid: uuidv4(),
-    member_number: randomNumber(10000, 9999999),
+    member_id: randomNumber(10000, 9999999),
     nik: req.body.data.nik,
     company_id: req.body.company_id,
     fullName: req.body.data.fullName,
@@ -40,7 +40,7 @@ exports.createAdmin = async (req, res) => {
     password: await bcrypt.hash(req.body.data.password, 10),
     role: req.body.role,
     created_by: req.body.data.created_by,
-    state: "Active",
+    status: "Active",
     created_at: new Date(),
   });
   // console.log(admin);
@@ -74,7 +74,7 @@ exports.updateAdmin = async (req, res) => {
     phone_number: req.body.data.phone_number,
     role: req.body.data.role,
     company_id: req.body.data.company_id,
-    state: req.body.data.state,
+    status: req.body.data.status,
     updated_by: req.body.data.updated_by,
     updated_at: new Date(),
   });

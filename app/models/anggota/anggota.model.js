@@ -2,41 +2,35 @@ const db = require("../../config/db.config");
 const bcrypt = require("bcrypt");
 // constructor
 const Anggota = function (data) {
+  console.log(data);
+  
   this.uid = data.uid;
   this.company_id = data.company_id;
   this.nik = data.nik;
-  if (data.member_number != undefined) {
-    this.member_number = "KSP" + data.member_number;
-  }
-  
+  this.member_id = data.member_id ? "KSP" + data.member_id : null;
   this.email = data.email;
   this.fullName = data.fullName;
-  this.date = data.dob;
+  this.date_of_birth = data.dob || null;
+  this.place_of_birth = data.place_of_birth || '';
   this.address = data.address;
   this.phone_number = data.phone_number;
-  this.role = data.role;
-  if (data.password != undefined) {
-    this.password = data.password;
-  }
- 
-  this.state = data.state;
-  if (data.created_at != undefined) {
-    this.created_at = data.created_at;
-  }
-  if (data.created_by != undefined) {
-    this.created_by = data.created_by;
-  }
-  if (data.updated_by != undefined) {
-    this.updated_by = data.updated_by;
-  }
-  if (data.updated_at != undefined) {
-    this.updated_at = data.updated_at;
-  }
+  this.gender = data.gender || '';
+  this.marital_status = data.marital_status || '';
+  this.identity_type = data.identity_type || '';
+  this.no_identity = data.no_identity || '';
+  this.religion = data.religion || '';
+  this.password = data.password || null;
+  this.status = data.status || '';
+  this.role = '4';
+  this.created_at = data.created_at || new Date();
+  this.created_by = data.created_by || null;
+  this.updated_by = data.updated_by || null;
+  this.updated_at = data.updated_at || null;
   
 };
 
 Anggota.create = (newUsers, result) => {
-  // console.log(newUsers);
+  console.log(newUsers);
   db.query("INSERT INTO users SET ?", newUsers, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -68,6 +62,8 @@ Anggota.update = (newUsers, result) => {
   }
 };
 const performUpdate = (newUsers, result) => {
+  console.log(newUsers);
+  
   db.query(
     "UPDATE users SET ? WHERE uid = ?",
     [newUsers, newUsers.uid],
@@ -93,7 +89,7 @@ const performUpdate = (newUsers, result) => {
 
 Anggota.getAll = (fullName, company, result) => {
   let query =
-    "SELECT ROW_NUMBER() OVER () AS no, u.id, u.company_id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id and r.role_name = 'Anggota'";
+    "SELECT ROW_NUMBER() OVER () AS no, u.id, u.company_id, u.uid, u.nik,  u.member_id, u.fullName, u.email, u.date_of_birth, u.address, u.phone_number, u.status, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id and r.role_name = 'Anggota'";
 
   if (fullName) {
     query += ` AND u.fullName like '%${fullName}%'`;

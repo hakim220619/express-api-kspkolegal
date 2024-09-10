@@ -11,7 +11,7 @@ Generate.create = async (result) => {
   }
   const users = [];
 
-  for (let i = 0; i < 5000; i++) {
+  for (let i = 0; i < 100; i++) {
     users.push([
       1,
       uuidv4(),
@@ -30,7 +30,7 @@ Generate.create = async (result) => {
   }
   //   console.log(fakeData);
   const query =
-    "INSERT INTO users (company_id, uid, nik, member_number, fullName, email, address, password, date,phone_number, state, created_at, role ) VALUES ?";
+    "INSERT INTO users (company_id, uid, nik, member_id, fullName, email, address, password, date,phone_number, status, created_at, role ) VALUES ?";
   db.query(query, [users], (err, results) => {
     result(null, results);
   });

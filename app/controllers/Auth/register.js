@@ -13,8 +13,8 @@ exports.register = async (req, res) => {
   const users = new Register({
     uid: req.body.uid,
     nik: req.body.nik,
-    nta: req.body.nta,
-    member_number: req.body.member_number,
+    
+    member_id: req.body.member_id,
     fullName: req.body.fullName,
     email: req.body.email,
     password: await bcrypt.hash(req.body.password, 60),

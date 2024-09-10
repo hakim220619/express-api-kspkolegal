@@ -13,8 +13,8 @@ exports.register = (req, res) => {
   const users = new Users({
     uid: req.body.uid,
     nik: req.body.nik,
-    nta: req.body.nta,
-    member_number: req.body.member_number,
+    
+    member_id: req.body.member_id,
     fullName: req.body.fullName,
     date_of_birth: req.body.date_of_birth,
     address: req.body.address,

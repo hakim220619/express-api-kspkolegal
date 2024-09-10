@@ -11,8 +11,10 @@ const Login = function (data) {
 Login.loginAction = async (req, res) => {
   try {
     db.query(
-      `SELECT u.id, u.company_id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id and u.email = '${req.email}'`,
+      `SELECT u.id, u.company_id, u.uid, u.nik, u.member_id, u.fullName, u.email, u.date_of_birth, u.address, u.phone_number, u.status, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id and u.email = '${req.email}'`,
       async (err, respons) => {
+        console.log(err);
+        
         if (respons.length == 0) {
           res(err, {
             message: "Email tidak terdaftar!.",
@@ -69,7 +71,7 @@ Login.cheklogin = async (req, res) => {
   try {
     const token = req.replace("Bearer ", "");
     db.query(
-      `SELECT u.id, u.company_id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, r.role_name as role FROM personal_access_tokens pat, users u, role r WHERE pat.tokenable_id=u.id and u.role=r.id and pat.token = '${token}'`,
+      `SELECT u.id, u.company_id, u.uid, u.nik, u.member_id, u.fullName, u.email, u.date_of_birth, u.address, u.phone_number, u.status, r.role_name as role FROM personal_access_tokens pat, users u, role r WHERE pat.tokenable_id=u.id and u.role=r.id and pat.token = '${token}'`,
       async (err, respons) => {
         if (respons.length == 0) {
           res(err, {

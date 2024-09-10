@@ -21,5 +21,23 @@ Role.getRoleAdmin = (role_name, result) => {
     result(null, res);
   });
 };
+Role.getRoleNoDeve = (role_name, result) => {
+  let query = "SELECT * FROM role where role_name NOT IN ('Pegawai', 'Anggota') ";
+
+  if (role_name) {
+    query += ` and role_name NOT LIKE '%${role_name}%'`;
+  }
+
+  db.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    // console.log("role: ", res);
+    result(null, res);
+  });
+};
 
 module.exports = Role;

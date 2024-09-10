@@ -5,7 +5,7 @@ const Users = function (users) {
   this.uid = users.uid;
   this.nik = users.nik;
   this.nta = users.nta;
-  this.member_number = users.member_number;
+  this.member_id = users.member_id;
   this.fullName = users.fullName;
   this.date_of_birth = users.date_of_birth;
   this.address = users.address;
@@ -46,7 +46,7 @@ Users.create = (newUsers, result) => {
 // };
 
 Users.getAll = (fullName, result) => {
-  let query = "SELECT u.id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id ";
+  let query = "SELECT u.id, u.uid, u.nik,  u.member_id, u.fullName, u.email, u.date_of_birth, u.address, u.phone_number, u.status, u.password, r.role_name as role FROM users u, role r WHERE u.role=r.id ";
 
   if (fullName) {
     query += ` and u.email LIKE '%${fullName}%'`;

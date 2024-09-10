@@ -6,8 +6,8 @@ const Admin = function (data) {
   this.uid = data.uid;
   this.company_id = data.company_id;
   this.nik = data.nik;
-  if (data.member_number != undefined) {
-    this.member_number = "KSP" + data.member_number;
+  if (data.member_id != undefined) {
+    this.member_id = "KSP" + data.member_id;
   }
   
   this.email = data.email;
@@ -20,7 +20,7 @@ const Admin = function (data) {
     this.password = data.password;
   }
  
-  this.state = data.state;
+  this.status = data.status;
   if (data.created_at != undefined) {
     this.created_at = data.created_at;
   }
@@ -94,7 +94,7 @@ const performUpdate = (newUsers, result) => {
 
 Admin.getAll = (fullName, role, status, company, result) => {
   let query =
-    "SELECT ROW_NUMBER() OVER () AS no, u.id, u.company_id, u.uid, u.nik, u.nta, u.member_number, u.fullName, u.email, u.date, u.address, u.phone_number, u.state, u.password, r.role_name as role, c.company_name  FROM users u, role r, company c  WHERE u.role=r.id and u.company_id=c.id AND  r.role_name not in ('Anggota', 'Pegawai')";
+    "SELECT ROW_NUMBER() OVER () AS no, u.id, u.company_id, u.uid, u.nik,  u.member_id, u.fullName, u.email, u.date_of_birth, u.address, u.phone_number, u.status, u.password, r.role_name as role, c.company_name  FROM users u, role r, company c  WHERE u.role=r.id and u.company_id=c.id AND  r.role_name not in ('Anggota', 'Pegawai')";
 
   if (fullName) {
     query += ` AND u.fullName like '%${fullName}%'`;
@@ -103,7 +103,7 @@ Admin.getAll = (fullName, role, status, company, result) => {
     query += ` AND r.role_name = '${role}'`;
   }
   if (status) {
-    query += ` AND u.state = '${status}'`;
+    query += ` AND u.status = '${status}'`;
   }
   if (company != 1 && company != 'all') {
     query += ` AND u.company_id = '${company}'`;
