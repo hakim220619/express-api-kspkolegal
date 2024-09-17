@@ -11,12 +11,12 @@ Generate.create = async (result) => {
   }
   const users = [];
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 200; i++) {
     users.push([
-      1,
+      2,
       uuidv4(),
-      "KSP" + randomNumber(1000, 9999999),
       randomNumber(10000, 9999999),
+      "KSP" + randomNumber(1000000, 9999999),
       faker.name.findName(),
       faker.internet.email(),
       faker.address.streetAddress(),
@@ -25,13 +25,22 @@ Generate.create = async (result) => {
       "4253452352342",
       "Verification",
       new Date(),
-      2
+      4,
+      'Banyumas',
+      'SWASTA',
+      'Islam',
+      'Menikah',
+      'KTP',
+      randomNumber(1000000000, 999999999999),
+      '6285797887722'
     ]);
   }
-  //   console.log(fakeData);
+    // console.log(users);
   const query =
-    "INSERT INTO users (company_id, uid, nik, member_id, fullName, email, address, password, date,phone_number, status, created_at, role ) VALUES ?";
-  db.query(query, [users], (err, results) => {
+    "INSERT INTO users (company_id, uid, nik, member_id, fullName, email, address, password, date_of_birth,phone_number, status, created_at, role, place_of_birth, work, religion, marital_status, identity_type, no_identity, no_wa ) VALUES ?";
+  db.query(query, [users], (err, results) => {   
+    console.log(err);
+     
     result(null, results);
   });
 };

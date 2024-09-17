@@ -3,7 +3,7 @@ const General = function (data) {};
 
 General.findUsersByUid = async (uid, result) => {
   let query =
-    "SELECT u.id, u.company_id, c.company_name, u.uid, u.nik,  u.member_id, u.fullName, u.email, u.date_of_birth, u.address, u.phone_number, u.status, u.password, u.role, r.role_name, u.marital_status, u.place_of_birth, u.no_identity, u.gender, u.identity_type FROM users u, role r, company c WHERE u.role=r.id and u.company_id=c.id and u.uid = '" +
+    "SELECT u.id, u.religion, u.work, u.member_id, u.company_id, c.company_name, u.uid, u.nik,  u.member_id, u.fullName, u.email, u.date_of_birth, u.address, u.phone_number, u.status, u.password, u.role, u.created_at, r.role_name, u.marital_status, u.place_of_birth, u.no_identity, u.gender, u.identity_type FROM users u, role r, company c WHERE u.role=r.id and u.company_id=c.id and u.uid = '" +
     uid +
     "'";
 
@@ -34,6 +34,19 @@ General.getstatus = async (result) => {
 };
 General.getReligion = async (result) => {
   let query = "SELECT * from religion where religion_status = 'ON'";
+  db.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    // console.log("role: ", res);
+    result(null, res);
+  });
+};
+General.getWorking = async (result) => {
+  let query = "SELECT * from work where work_status = 'ON'";
   db.query(query, (err, res) => {
     if (err) {
       console.log("error: ", err);

@@ -79,6 +79,17 @@ exports.getReligion = (req, res, next) => {
     else res.send(data);
   });
 };
+exports.getWorking = (req, res, next) => {
+  // console.log(req);
+  General.getWorking((err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials.",
+      });
+    else res.send(data);
+  });
+};
 exports.getMaritalStatus = (req, res, next) => {
   // console.log(req);
   General.getMaritalStatus((err, data) => {

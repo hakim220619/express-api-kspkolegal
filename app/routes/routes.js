@@ -19,8 +19,14 @@ module.exports = (app) => {
   router.post("/delete-admin", token.authenticateToken, Admin.delete);
   //Anggota
   router.get("/list-anggota", token.authenticateToken, Anggota.listAnggota);
+  router.get("/list-anggota-verification", token.authenticateToken, Anggota.listAnggotaVerification);
   router.post("/create-anggota", token.authenticateToken, Anggota.createAnggota);
+  router.post("/create-anggota-verification", token.authenticateToken, Anggota.createAnggotaVerification);
   router.post("/update-anggota", token.authenticateToken, Anggota.updateAnggota);
+  router.post("/update-anggota-accept", token.authenticateToken, Anggota.updateAnggotaAccept);
+  router.post("/update-anggota-rejected", token.authenticateToken, Anggota.updateAnggotaRejected);
+  router.post("/delete-anggota", token.authenticateToken, Anggota.delete);
+
 
   //Identity
   router.get("/get-identity-types", token.authenticateToken, general.getIdentityTypes);
@@ -33,6 +39,7 @@ module.exports = (app) => {
   router.post("/general/getCompany", token.authenticateToken, general.getCompany);
   router.get("/general/getStatus", token.authenticateToken, general.getstatus);
   router.get("/general/getReligion", token.authenticateToken, general.getReligion);
+  router.get("/general/getWorking", token.authenticateToken, general.getWorking);
   router.get("/general/getMaritalStatus", token.authenticateToken, general.getMaritalStatus);
   router.post(
     "/general/findUsersByUid",
